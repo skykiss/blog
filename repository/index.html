@@ -17,16 +17,18 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>Hexo</title>
+  <title>Repositories | Hexo</title>
   <meta property="og:type" content="website">
-<meta property="og:title" content="October&#39;s blog">
-<meta property="og:url" content="https://october.ink/index.html">
+<meta property="og:title" content="Repositories">
+<meta property="og:url" content="https://october.ink/repository/index.html">
 <meta property="og:site_name" content="October&#39;s blog">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-12-26T12:00:05.132Z">
+<meta property="article:modified_time" content="2019-12-26T12:00:05.132Z">
 <meta property="article:author" content="october">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://october.ink/index.html">
+  <link rel="canonical" href="https://october.ink/repository/index.html">
   
     <link rel="alternate" href="/atom.xml" title="October&#39;s blog" type="application/atom+xml">
   
@@ -43,7 +45,7 @@
 <meta name="generator" content="Hexo 4.1.1"></head>
 
 
-<body class="main-center theme-green" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center theme-green no-sidebar" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -255,123 +257,45 @@
 
   
   <main class="main" role="main">
-  
-  
-    <div class="content">
-  <article id="post-JVM之符号引用和直接引用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-    
-    <div class="article-header">
-      
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/23/JVM%E4%B9%8B%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8/">JVM之符号引用和直接引用</a>
-    </h1>
-  
-
-      
-      <div class="article-meta">
-        <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2019/12/23/JVM%E4%B9%8B%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8/" class="article-date">
-	  <time datetime="2019-12-23T10:14:21.000Z" itemprop="datePublished">2019-12-23</time>
-	</a>
-</span>
-        
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-  </span>
-
-        
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/JVM/" rel="tag">JVM</a>
-  </span>
-
-
-        
-
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/12/23/JVM%E4%B9%8B%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8/#comments" class="article-comment-link">Comments</a></span>
-        
-	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 821(words)</span>
-	
-	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 2(minutes)</span>
-	
-
+  <article class="article article-repository article-type-list" itemscope="">
+  <header class="article-header">
+    <h1 itemprop="title">Repositories</h1>
+    <p class="text-muted">I have <span id="repo-count">0</span> projects on Github</p>
+  </header>
+  <div class="article-body">
+    <div class="repo-content">
+      <div class="blankslate">
+        <p>正在加载...</p>
       </div>
     </div>
-    <div class="article-entry marked-body" itemprop="articleBody">
-      
-        <h4 id="直接引用"><a href="#直接引用" class="headerlink" title="直接引用"></a>直接引用</h4><p>直接引用和虚拟机的布局是相关的，不同的虚拟机对于相同的符号引用所翻译出来的直接引用一般是不同的。如果有了直接引用，那么直接引用的目标一定被加载到了内存中。<br>直接引用可以是： </p>
-<ol>
-<li>直接指向目标的指针。（个人理解为：指向对象，类变量和类方法的指针）</li>
-<li>相对偏移量。（指向实例的变量，方法的指针）</li>
-<li>一个间接定位到对象的句柄。</li>
-</ol>
-<h4 id="符号引用"><a href="#符号引用" class="headerlink" title="符号引用"></a>符号引用</h4><p>符号引用则属于编译原理方面的概念，包括了下面三类常量： </p>
-<ol>
-<li>类和接口的全限定名（Fully Qualified Name） </li>
-<li>字段的名称和描述符（Descriptor） </li>
-<li>方法的名称和描述符 </li>
-</ol>
-<h5 id="符号引用存在原因："><a href="#符号引用存在原因：" class="headerlink" title="符号引用存在原因："></a>符号引用存在原因：</h5><p>Java代码在进行Javac编译的时候，并不像C和C++那样有“连接”这一步骤，而是在虚拟机加载Class文件的时候进行动态连接。也就是说，在Class文件中不会保存各个方法、字段的最终内存布局信息，因此这些字段、方法的符号引用不经过运行期转换的话无法得到真正的内存入口地址，也就无法直接被虚拟机使用。当虚拟机运行时，需要从常量池获得对应的符号引用，再在类创建时或运行时解析、翻译到具体的内存地址之中。</p>
-<h5 id="类的全限定名"><a href="#类的全限定名" class="headerlink" title="类的全限定名"></a>类的全限定名</h5><p>类的全限定名称很好理解，比如Object类他的包名为java.lang，所以他的全限定名就是java/lang/Object，他仅仅是把类中的“.”替换为“/”而已，为了让多个全限定名不会混乱，一般会在结尾添加”;”表示结束。</p>
-<h5 id="简单名称"><a href="#简单名称" class="headerlink" title="简单名称"></a>简单名称</h5><p>简单名称就是指没有参数修饰和类型的方法或者字段名，比如clone()方法的简单名称就是clone，字段a的简单名称就是m；</p>
-<h5 id="描述符"><a href="#描述符" class="headerlink" title="描述符"></a>描述符</h5><p>相对于全限定名和简单名称来说，方法和字段的描述符就要复杂一些。描述符的作用是 用来描述字段的数据类型、方法的参数列表（包括数量、类型以及顺序）和返回值。根据描述符规则，基本数据类型（byte、char、double、float、int、long、short、boolean）以及代表 无返回值的void类型都用一个大写字符来表示，而对象类型则用字符L加对象的全限定名来表示。</p>
-<p><img src="en-resource://database/845:1" alt="dd657bede2404b17590979cc605d8b8d.png"></p>
-<p>对于数组类型，每一个维度将使用一个前置的“[”，二维数组则使用两个“[， 如一个定义为 ”java.lang.String[][]“的二维类型的数组，将被记录为：“[[Ljava/lang/String；”，一个整型数 组“int[]”将被记录为“[I”。</p>
-<p>描述符描述方法的时候，按照先参数列表，后返回值的顺序描述，参数列表按照参数的严格顺序放在一组小括号“（）”之内。如方法void inc（）的描述符为“（）V”，方法 java.lang.String toString（）的描述符为“（）Ljava/lang/String；”，方法int indexOf（char[]source,int sourceOffset,int sourceCount,char[]target,int targetOffset,int targetCount,int fromIndex）的描述符为“（[CII[CIII）I”。 </p>
-<p>参考文献</p>
-<blockquote>
-<p>深入理解Java虚拟机（第二版</p>
-</blockquote>
-
-      
-    </div>
-    <div class="article-footer">
-      <blockquote class="mt-2x">
-  <ul class="post-copyright list-unstyled">
-    
-    <li class="post-copyright-link hidden-xs">
-      <strong>本文链接：</strong>
-      <a href="https://october.ink/2019/12/23/JVM%E4%B9%8B%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8/" title="JVM之符号引用和直接引用" target="_blank" rel="external">https://october.ink/2019/12/23/JVM%E4%B9%8B%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8/</a>
-    </li>
-    
-    <li class="post-copyright-license">
-      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
-    </li>
-  </ul>
-</blockquote>
-
-
-<div class="panel panel-default panel-badger">
-  <div class="panel-body">
-    <figure class="media">
-      <div class="media-left">
-        <a href="http://october.ink" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
-        </a>
-      </div>
-      <div class="media-body">
-        <h3 class="media-heading"><a href="http://october.ink" target="_blank"><span class="text-dark">十月</span><small class="ml-1x">Web Developer</small></a></h3>
-        <div>时光不负有心人，一生只爱你一人。</div>
-      </div>
-    </figure>
   </div>
-</div>
+</article>
+
+  
 
 
+
+<!--Github项模版-->
+<script type="text/template" id="list-template">
+  <li class="col-sm-6 col-md-6 col-lg-4">
+    <div class="repo hover-shadow hover-grow">
+      <div class="repo-image geopattern" data-pattern-id="{%=name%}"></div>
+      <h3 class="repo-title"><a href="{%=clone_url%}" target="_blank" rel="external nofollow noopener noreferrer">{%=full_name%}</a></h3>
+      <p class="repo-body">{%=description%}</p>
+      <div class="repo-meta">
+        <span class="meta meta-type pull-left" aria-label="{%=language%} project">{%=language%}</span>
+        <span class="meta meta-star" aria-label="{%=stargazers_count%} stars"><i class="icon icon-star-fill"></i> {%=stargazers_count%}</span>
+        <span class="meta meta-fork" aria-label="{%=forks_count%} forks"><i class="icon icon-code-fork"></i> {%=forks_count%}</span>
+        <span class="meta meta-last-updated" aria-label="最后更新时间：{%=updated_at%}">
+        <i class="icon icon-clock"></i> <time datetime="{%=updated_at%}">{%=updated_at%}</time></span>
+      </div>
     </div>
-  </article>
-  
-</div>
-
-  
-
-   
+  </li>
+</script>
+<!--获取失败模版-->
+<script type="text/template" id="error-template">
+  <h3>加载失败</h3><p>请刷新或稍后再试...</p>
+</script>
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
@@ -425,9 +349,59 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
+   <script type="text/javascript">
+var open = function() {
+  var baiduTpl = new Object();
+  var handleTpl = function() {
+    baiduTpl.list = baidu.template("list-template");
+    baiduTpl.error = baidu.template("error-template");
+  };
 
+  var handleGithub = function() {
+    var repoContainer = $('.repo-content');
+    var errorContainer = repoContainer.find(".blankslate");
+    var countContainer = $("#repo-count");
 
-   
+    $.get("https://api.github.com/users/skykiss/repos", function(result) {
+      if (result) {
+        errorContainer.remove();
+        countContainer.text(result.length); //设置项目个数
+        var ul = $("<ul class='repo-list row clearfix'></ul>");
+        result.sort(function(a, b) {
+          return new Date(b.updated_at) - new Date(a.updated_at)
+        }).sort(function(a, b) {
+          var a_start = a.stargazers_count;
+          var b_start = b.stargazers_count;
+          if (a.fork) a_start * 0.5;
+          if (b.fork) b_start * 0.5;
+          return b_start - a_start;
+        }).map(function(repo) {
+          if (!repo.description) repo.description = "";
+          repo.updated_at = repo.updated_at.substring(0, repo.updated_at.lastIndexOf("T"));
+          var html = baiduTpl.list(repo);
+          ul.append(html);
+        })
+
+        repoContainer.append(ul);
+        $(".geopattern").each(function() {
+          $(this).geopattern($(this).data('pattern-id'));
+        });
+      } else {
+        errorContainer.append(baiduTpl.error());
+      }
+    });
+  };
+
+  return {
+    init: function() {
+      handleTpl();
+      handleGithub();
+    }
+  }
+};
+$(open().init);
+</script>
+
 
 
 
