@@ -17,23 +17,24 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>判断一棵树是否是AVL树 | October&#39;s blog</title>
-  <meta name="description" content="平衡二叉树的定义​    任何两个子树的高度差最大是1，这样的二叉树叫做AVL树。 解题思路从底部到顶部递归判断左右子树相差是否大于1，如果大于1则表示不满足AVL的性质，当所有的都满足后，判定这是一颗平衡二叉树。 实现代码1234567891011121314151617import java.util.*;public class Solution &amp;#123;    public boole">
+  <title>JVM之内存区域划分 | October&#39;s blog</title>
+  <meta name="description" content="介绍根据java虚拟机规范的规定，java虚拟机所管理的内存会包括以下几个运行时数据区域：程序计数器（Program Counter Register）、java栈（VM Stack）、本地方法栈（Native 各区域作用讲解程序计数器又被称作为PC寄存器，他是一块比较小的内存，可以看作是当前线程所执行字节码的行号指示器。字节码解释器的工作时候就是通过改变这个计数器的值来选取下一条需要执行字节码指">
 <meta property="og:type" content="article">
-<meta property="og:title" content="判断一棵树是否是AVL树">
-<meta property="og:url" content="https://blog.october.ink/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/index.html">
+<meta property="og:title" content="JVM之内存区域划分">
+<meta property="og:url" content="https://blog.october.ink/2019/10/28/JVM%E4%B9%8B%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86/index.html">
 <meta property="og:site_name" content="October&#39;s blog">
-<meta property="og:description" content="平衡二叉树的定义​    任何两个子树的高度差最大是1，这样的二叉树叫做AVL树。 解题思路从底部到顶部递归判断左右子树相差是否大于1，如果大于1则表示不满足AVL的性质，当所有的都满足后，判定这是一颗平衡二叉树。 实现代码1234567891011121314151617import java.util.*;public class Solution &amp;#123;    public boole">
+<meta property="og:description" content="介绍根据java虚拟机规范的规定，java虚拟机所管理的内存会包括以下几个运行时数据区域：程序计数器（Program Counter Register）、java栈（VM Stack）、本地方法栈（Native 各区域作用讲解程序计数器又被称作为PC寄存器，他是一块比较小的内存，可以看作是当前线程所执行字节码的行号指示器。字节码解释器的工作时候就是通过改变这个计数器的值来选取下一条需要执行字节码指">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-12-01T11:25:24.000Z">
-<meta property="article:modified_time" content="2019-12-27T11:30:00.525Z">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/10/28/16e1315a3a3812a1?imageView2/2/w/480/h/480/q/85/interlace/1">
+<meta property="article:published_time" content="2019-10-28T11:03:49.000Z">
+<meta property="article:modified_time" content="2019-12-28T11:10:05.761Z">
 <meta property="article:author" content="october">
-<meta property="article:tag" content="数据结构">
-<meta property="article:tag" content="平衡二叉树">
-<meta property="article:tag" content="AVL树">
+<meta property="article:tag" content="JVM">
+<meta property="article:tag" content="内存划分">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/10/28/16e1315a3a3812a1?imageView2/2/w/480/h/480/q/85/interlace/1">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://blog.october.ink/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/index.html">
+  <link rel="canonical" href="https://blog.october.ink/2019/10/28/JVM%E4%B9%8B%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86/index.html">
   
     <link rel="alternate" href="/atom.xml" title="October&#39;s blog" type="application/atom+xml">
   
@@ -324,14 +325,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-判断一棵树是否是AVL树" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-JVM之内存区域划分" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      判断一棵树是否是AVL树
+      JVM之内存区域划分
     </h1>
   
 
@@ -339,42 +340,57 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/" class="article-date">
-	  <time datetime="2019-12-01T11:25:24.000Z" itemprop="datePublished">2019-12-01</time>
+	<a href="/2019/10/28/JVM%E4%B9%8B%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86/" class="article-date">
+	  <time datetime="2019-10-28T11:03:49.000Z" itemprop="datePublished">2019-10-28</time>
 	</a>
 </span>
         
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
   </span>
 
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/AVL%E6%A0%91/" rel="tag">AVL树</a>, <a class="article-tag-link" href="/tags/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">平衡二叉树</a>, <a class="article-tag-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
+	<a class="article-tag-link" href="/tags/JVM/" rel="tag">JVM</a>, <a class="article-tag-link" href="/tags/%E5%86%85%E5%AD%98%E5%88%92%E5%88%86/" rel="tag">内存划分</a>
   </span>
 
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/#comments" class="article-comment-link">Comments</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/10/28/JVM%E4%B9%8B%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86/#comments" class="article-comment-link">Comments</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 199(words)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.3k(words)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 1(minutes)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 4(minutes)</span>
 	
 
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h5 id="平衡二叉树的定义"><a href="#平衡二叉树的定义" class="headerlink" title="平衡二叉树的定义"></a>平衡二叉树的定义</h5><p>​    任何两个子树的高度差最大是1，这样的二叉树叫做AVL树。</p>
-<h5 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h5><p>从底部到顶部递归判断左右子树相差是否大于1，如果大于1则表示不满足AVL的性质，当所有的都满足后，判定这是一颗平衡二叉树。</p>
-<h5 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">IsBalanced_Solution</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> depth(root) != -<span class="number">1</span>;   </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">depth</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> left = depth(root.left);</span><br><span class="line">        <span class="keyword">if</span> (left == -<span class="number">1</span>) <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 没必要进行判断了</span></span><br><span class="line">        <span class="keyword">int</span> right = depth(root.right);</span><br><span class="line">        <span class="keyword">if</span> (right == -<span class="number">1</span>) <span class="keyword">return</span> -<span class="number">1</span>;  <span class="comment">// 没必要进行判断了</span></span><br><span class="line">        <span class="keyword">if</span> (Math.abs(left-right) &gt; <span class="number">1</span>) <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 左子树和右子树相差大于1</span></span><br><span class="line">        <span class="keyword">return</span> Math.max(left, right) + <span class="number">1</span>;  <span class="comment">// 返回左右子树大的那个+1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>根据java虚拟机规范的规定，java虚拟机所管理的内存会包括以下几个运行时数据区域：程序计数器（Program Counter Register）、java栈（VM Stack）、本地方法栈（Native<br><img src="https://user-gold-cdn.xitu.io/2019/10/28/16e1315a3a3812a1?imageView2/2/w/480/h/480/q/85/interlace/1" alt=""></p>
+<h3 id="各区域作用讲解"><a href="#各区域作用讲解" class="headerlink" title="各区域作用讲解"></a>各区域作用讲解</h3><h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>又被称作为PC寄存器，他是一块比较小的内存，可以看作是当前线程所执行字节码的行号指示器。字节码解释器的工作时候就是通过改变这个计数器的值来选取下一条需要执行字节码指令、分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器。<br>由于java虚拟机的多线程是通过线程轮流切换并分配处理器执行时间的方式来实现的，在任何时刻，一个处理器（对于多核处理器来说就是一个内核）只会执行一条线程中指令。因此为了线程切换恢复后可以恢复到正确位置，每一条线程都需要一个独立的处理器，各线程之间互不影响。所以我们称这块区域为线程私有区域。</p>
+<h4 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h4><p>java虚拟机栈是线程私有的，他与线程的声明周期同步。虚拟机栈描述的是java方法执行的内存模型，每个方法执行都会创建一个<strong>栈帧</strong>，栈帧包含局部变量表、操作数栈、动态连接、方法出口等。每一个方法的执行到执行完成，对应着一个栈帧在虚拟机中从入栈到出栈的过程。java虚拟机栈栈顶的栈帧就是当前执行方法的栈帧。PC寄存器会指向该地址。当这个方法调用其他方法的时候久会创建一个新的栈帧，这个新的栈帧会被方法Java虚拟机栈的栈顶，变为当前的活动栈，在当前只有当前活动栈的本地变量才能被使用，当这个栈帧所有指令都完成的时候，这个栈帧被移除，之前的栈帧变为活动栈，前面移除栈帧的返回值变为这个栈帧的一个操作数。</p>
+<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p>本地方法栈和java虚拟栈基本相同，只不过是针对本地方法。在开发中如或涉及到JNI可能接触本地方法栈多一些，在有些虚拟机中已经将两个合二为一了（比如hotSpot）。</p>
+<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><p>方法区与Java堆一样，是各个线程的共享区域，用于存储已经被虚拟机加载的类信息、常量、静态变量等。在HotSpot中用永久代来实现方法区，二其他虚拟机是不存在永久代的。Java7已经将运行时的常量池从永久代移除，在Java堆中开辟了一块区域存放运行时常量池。在java8中，已经彻底没有永久代，将方法区直接放在一个与堆不相连的本地内存区域，这个区域叫做元空间。<br>元空间的本质和永久代类似，都是对 JVM 规范中方法区的实现。不过元空间与永久代 之间最大的区别在于：元空间并不在虚拟机中，而是使用本地内存。因此，默认情况下，元空间的大小仅受本地内存限制，但可以通过以下参数来指定元空间的大小：-XX:MetaspaceSize，初始空间大小。-XX:MaxMetaspaceSize，最大空间，默认是没有限制的。Java 虚拟机规范中对方法区规定了OutOfMemoryError异常：如果方法区的内存空间不能满足内存分配请求，那 Java 虚拟机将抛出一个OutOfMemoryError异常。</p>
+<h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>Java堆是Java虚拟机管理内存中最大的一块，是所有线程共享的内存区域，随虚拟机的启动而创建。该区域唯一目的是存放对象实例，几乎所有对象的实例都在堆里面分配。Java 虚拟机规范规定，Java 堆可以出于物理上不连续的内存空间中，只要逻辑上连续即可，如同磁盘空间一样，既可以实现成固定大小，也可以是扩展的，当前主流虚拟机都是 按照扩展来实现的（通过-Xmx 和-Xms 控制）。Java堆是垃圾收集器管理的主要区域，因此也叫”GC堆”，细分一点可以分为新生代和老年代；再细致一点新生代可以分为Eden空间、From Survivor空间、ToSurvivor空间。Java 虚拟机规范中对该区域规定了 OutOfMemoryError 异常：如果堆中没有 内存完成实例分配，并且堆无法再扩展则抛出 OutOfMemoryError异常。（当 Old区被放满的之后，进行 Full GC，Full GC 后，若 Survivor 及 old 区仍然无法存放从Eden复制过来的部分对象，则出现 OOM 错误/或者直接存放大对象、大数组，导致老年代空间不足）（详细讲解：待写）</p>
+<br>
+<br>
+<br>
+<br>
+参考文章：
+> https://juejin.im/post/5b235883e51d4558b64f051a
 
+<blockquote>
+<p><a href="https://www.jianshu.com/p/66e4e64ff278" target="_blank" rel="noopener">https://www.jianshu.com/p/66e4e64ff278</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.cnblogs.com/ityouknow/p/5610232.html" target="_blank" rel="noopener">https://www.cnblogs.com/ityouknow/p/5610232.html</a></p>
+</blockquote>
 
       
     </div>
@@ -384,7 +400,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://blog.october.ink/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/" title="判断一棵树是否是AVL树" target="_blank" rel="external">https://blog.october.ink/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/</a>
+      <a href="https://blog.october.ink/2019/10/28/JVM%E4%B9%8B%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86/" title="JVM之内存区域划分" target="_blank" rel="external">https://blog.october.ink/2019/10/28/JVM%E4%B9%8B%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -431,12 +447,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2019/12/23/JVM%E4%B9%8B%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8/" title="JVM之符号引用和直接引用"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+      <a href="/2019/10/29/JVM%E4%B9%8B%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E8%AF%A6%E8%A7%A3/" title="JVM之虚拟机栈详解"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2019/10/29/JVM%E4%B9%8B%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E8%AF%A6%E8%A7%A3/" title="JVM之虚拟机栈详解"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/" title="JVM之类加载过程"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     

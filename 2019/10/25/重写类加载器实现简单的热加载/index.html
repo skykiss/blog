@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>重写类加载器实现简单的热加载 | October&#39;s blog</title>
+  <meta name="description" content="Java ClassLoader简单讲解java中，类的实例化主要包括两个部分：类的加载和类的实例化。类的加载又被分为显示加载和隐式加载，使用new关键字创建实例时候，其实隐式的包含了类的加载过程。显示类加载主要常用的是class.forName方法。但是他们本身都是通过调用ClassLoader类的loadClass方法来完成类的加载工作。   JVM预定三种类型的类加载器：   启动（Boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重写类加载器实现简单的热加载">
+<meta property="og:url" content="https://blog.october.ink/2019/10/25/%E9%87%8D%E5%86%99%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E7%83%AD%E5%8A%A0%E8%BD%BD/index.html">
+<meta property="og:site_name" content="October&#39;s blog">
+<meta property="og:description" content="Java ClassLoader简单讲解java中，类的实例化主要包括两个部分：类的加载和类的实例化。类的加载又被分为显示加载和隐式加载，使用new关键字创建实例时候，其实隐式的包含了类的加载过程。显示类加载主要常用的是class.forName方法。但是他们本身都是通过调用ClassLoader类的loadClass方法来完成类的加载工作。   JVM预定三种类型的类加载器：   启动（Boot">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/10/25/16e026358f1557e7?imageView2/2/w/480/h/480/q/85/interlace/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/10/25/16e0263bcfacafce?imageView2/2/w/480/h/480/q/85/interlace/1">
+<meta property="article:published_time" content="2019-10-25T04:04:27.000Z">
+<meta property="article:modified_time" content="2019-12-28T11:06:24.731Z">
+<meta property="article:author" content="october">
+<meta property="article:tag" content="JVM">
+<meta property="article:tag" content="类加载器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/10/25/16e026358f1557e7?imageView2/2/w/480/h/480/q/85/interlace/1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.october.ink/2019/10/25/%E9%87%8D%E5%86%99%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E7%83%AD%E5%8A%A0%E8%BD%BD/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="October&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+
+<body class="main-center theme-green" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="http://blog.october.ink" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">十月</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Wuhan, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/skykiss" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AVL%E6%A0%91/" rel="tag">AVL树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E5%88%92%E5%88%86/" rel="tag">内存划分</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">平衡二叉树</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/" rel="tag">类加载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/" rel="tag">类加载器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/" rel="tag">虚拟机栈</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/AVL%E6%A0%91/" style="font-size: 13px;">AVL树</a> <a href="/tags/JVM/" style="font-size: 14px;">JVM</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%88%92%E5%88%86/" style="font-size: 13px;">内存划分</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 13px;">平衡二叉树</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 13px;">数据结构</a> <a href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/" style="font-size: 13px;">类加载</a> <a href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/" style="font-size: 13px;">类加载器</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/" style="font-size: 13px;">虚拟机栈</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/JVM/">JVM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/12/23/JVM%E4%B9%8B%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8/" class="title">JVM之符号引用和直接引用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-12-23T10:14:21.000Z" itemprop="datePublished">2019-12-23</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/" class="title">判断一棵树是否是AVL树</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-12-01T11:25:24.000Z" itemprop="datePublished">2019-12-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/JVM/">JVM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/10/29/JVM%E4%B9%8B%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E8%AF%A6%E8%A7%A3/" class="title">JVM之虚拟机栈详解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-10-29T11:03:02.000Z" itemprop="datePublished">2019-10-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/JVM/">JVM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/10/28/JVM%E4%B9%8B%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86/" class="title">JVM之内存区域划分</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-10-28T11:03:49.000Z" itemprop="datePublished">2019-10-28</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/JVM/">JVM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/" class="title">JVM之类加载过程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-10-27T11:03:34.000Z" itemprop="datePublished">2019-10-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-重写类加载器实现简单的热加载" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      重写类加载器实现简单的热加载
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/10/25/%E9%87%8D%E5%86%99%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E7%83%AD%E5%8A%A0%E8%BD%BD/" class="article-date">
+	  <time datetime="2019-10-25T04:04:27.000Z" itemprop="datePublished">2019-10-25</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/JVM/" rel="tag">JVM</a>, <a class="article-tag-link" href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/" rel="tag">类加载器</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/10/25/%E9%87%8D%E5%86%99%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E7%83%AD%E5%8A%A0%E8%BD%BD/#comments" class="article-comment-link">Comments</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.6k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 6(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="Java-ClassLoader简单讲解"><a href="#Java-ClassLoader简单讲解" class="headerlink" title="Java ClassLoader简单讲解"></a>Java ClassLoader简单讲解</h3><p>java中，类的实例化主要包括两个部分：类的加载和类的实例化。类的加载又被分为显示加载和隐式加载，使用new关键字创建实例时候，其实隐式的包含了类的加载过程。显示类加载主要常用的是class.forName方法。但是他们本身都是通过调用ClassLoader类的loadClass方法来完成类的加载工作。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/10/25/16e026358f1557e7?imageView2/2/w/480/h/480/q/85/interlace/1" alt=""></p>
+<ol>
+<li>JVM预定三种类型的类加载器：</li>
+</ol>
+<ul>
+<li>启动（BootStrap）类加载器：是用本地代码实现的类装载器，它负责加载 <Java_Runtime_Home>/lib下面的类库加载到内存中（如rt.jar）。由于启动类加载器设计到虚拟机本地实现细节，开发者无法直接获取到启动类加载器的引用，所以不允许直接通过引用来操作。</li>
+<li>扩展（Extension）类加载器：是由 Sun 的 ExtClassLoader（sun.misc.Launcher$ExtClassLoader）实现的。它负责将&lt; Java_Runtime_Home &gt;/lib/ext或者由系统变量 java.ext.dir指定位置中的类库加载到内存中。开发者可以直接使用标准扩展类加载器。</li>
+<li>应用（Application）类加载器：是由 Sun 的 AppClassLoader（sun.misc.Launcher$AppClassLoader）实现的。它负责将系统类路径（CLASSPATH）中指定的类库加载到内存中。开发者可以直接使用系统类加载器。</li>
+</ul>
+<ol start="2">
+<li>双亲委派机制：</li>
+</ol>
+<ul>
+<li>当特定的类加载器接受到加载类的请求的时候，首先查找类是否已经加载，如果未加载则将加载任务委托给父类加载器，依次递归，如果父类加载器可以完成类加载任务，则返回；如果无法加载则由自己去加载。</li>
+<li>对于每个类加载器都有自己的命名空间，对于<strong>同一个类加载器的实例</strong>来说，每个名字相同的类只能存在一个，并且加载一次。也就是说对比一个类是否相同还要对比他们是否是由同一个类加载器的同一个实例加载(JVM自带的类加载器是采用单例模式，可以保证是由同一个实例加载)。</li>
+</ul>
+<ol start="3">
+<li>ClassLoader类介绍</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getParent()</td>
+<td>返回该类加载器的父类加载器</td>
+</tr>
+<tr>
+<td>loadClass(String name)</td>
+<td>加载名称为 name的类，返回的结果是 java.lang.Class类的实例。</td>
+</tr>
+<tr>
+<td>findClass(String name)</td>
+<td>查找名称为 name的类，返回的结果是 java.lang.Class类的实例。</td>
+</tr>
+<tr>
+<td>findLoadedClass(String name)</td>
+<td>查找名称为 name的已经被加载过的类，返回的结果是 java.lang.Class类的实例。</td>
+</tr>
+<tr>
+<td>defineClass(String name, byte[] b, int off, int len)</td>
+<td>把字节数组 b中的内容转换成 Java 类，返回的结果是 java.lang.Class类的实例。这个方法被声明为 final的。</td>
+</tr>
+<tr>
+<td>resolveClass(Class&lt;?&gt; c)</td>
+<td>链接指定的 Java 类。</td>
+</tr>
+</tbody></table>
+<h3 id="编写自定义类加载器"><a href="#编写自定义类加载器" class="headerlink" title="编写自定义类加载器"></a>编写自定义类加载器</h3><p>我们编写的类加载器需要继承自ClassLoader类，我们先了解有关热替换的一些重要的方法。</p>
+<ul>
+<li>findLoadedClass：每个类加载器都维护有自己的一份已加载类名字空间，其中不能出现两个同名的类。凡是通过该类加载器加载的类，无论是直接的还是间接的，都保存在自己的名字空间中，该方法就是在该名字空间中寻找指定的类是否已存在，如果存在就返回给类的引用，否则就返回 null。这里的直接是指，存在于该类加载器的加载路径上并由该加载器完成加载，间接是指，由该类加载器把类的加载工作委托给其他类加载器完成类的实际加载。</li>
+<li>getSystemClassLoader：Java2 中新增的方法。该方法返回系统使用的 ClassLoader。可以在自己定制的类加载器中通过该方法把一部分工作转交给系统类加载器去处理。</li>
+<li>defineClass：该方法是 ClassLoader 中非常重要的一个方法，它接收以字节数组表示的类字节码，并把它转换成 Class 实例，该方法转换一个类的同时，会先要求装载该类的父类以及实现的接口类。</li>
+<li>loadClass： 加载类的入口方法，调用该方法完成类的显式加载。通过对该方法的重新实现，我们可以完全控制和管理类的加载过程。</li>
+<li>resolveClass：链接一个指定的类。这是一个在某些情况下确保类可用的必要方法，详见 Java 语言规范中“执行”一章对该方法的描述。</li>
+</ul>
+<p>实现源码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> net.ziruo.classloader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: october</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/10/25 16:48</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HotClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String rootDir;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> HashSet&lt;String&gt; classNameSet;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HotClassLoader</span><span class="params">(String rootDir, String[] classNames)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.rootDir = rootDir;</span><br><span class="line">        classNameSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">        loadAllClass(classNames);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加载所有类</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadAllClass</span><span class="params">(String[] classNames)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; classNames.length; i++) &#123;</span><br><span class="line">            String className = classNames[i];</span><br><span class="line">            String fullName = getFullName(className);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                loadClassToMetaSpace(className, fullName);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            classNameSet.add(className);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 得到类的完整名字=所在目录+包+文件名</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getFullName</span><span class="params">(String className)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> rootDir + <span class="string">"\\"</span> +</span><br><span class="line">                className.replace(<span class="string">"."</span>, <span class="string">"\\"</span>) +</span><br><span class="line">                <span class="string">".class"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加载数据到元空间</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Class <span class="title">loadClassToMetaSpace</span><span class="params">(String name, String fullName)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 通过class问价绝对地址来获取class文件</span></span><br><span class="line">        File classFile = <span class="keyword">new</span> File(fullName);</span><br><span class="line">        <span class="comment">// 创建数组来存放class文件</span></span><br><span class="line">        <span class="keyword">byte</span>[] classData = <span class="keyword">new</span> <span class="keyword">byte</span>[(<span class="keyword">int</span>)classFile.length()];</span><br><span class="line">        FileInputStream inputStream = <span class="keyword">new</span> FileInputStream(classFile);</span><br><span class="line">        <span class="comment">// 读取数据到数组中</span></span><br><span class="line">        inputStream.read(classData);</span><br><span class="line">        inputStream.close();</span><br><span class="line">        <span class="comment">// 加载类到元空间 在方法区生成一个Class类的对象</span></span><br><span class="line">        <span class="keyword">return</span> defineClass(name, classData, <span class="number">0</span>, (<span class="keyword">int</span>)classFile.length());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; loadClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        Class cls = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">// 查找已经加载的类</span></span><br><span class="line">        cls = findLoadedClass(name);</span><br><span class="line">        <span class="keyword">if</span> (!classNameSet.contains(name) &amp;&amp; cls == <span class="keyword">null</span>)&#123;</span><br><span class="line">            cls = getSystemClassLoader().loadClass(name);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (cls == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ClassNotFoundException();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cls;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> net.ziruo.classloader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.Timer;</span><br><span class="line"><span class="keyword">import</span> java.util.TimerTask;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: october</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/10/25 17:18</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HotClassLoaderTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Timer().schedule(<span class="keyword">new</span> TimerTask() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">final</span> HotClassLoader hotClassLoader = <span class="keyword">new</span> HotClassLoader(<span class="string">"E:\\Code\\JAVA\\netty-demo\\target\\classes\\"</span>,</span><br><span class="line">                        <span class="keyword">new</span> String[]&#123;<span class="string">"net.ziruo.classloader.Apple"</span>&#125;);</span><br><span class="line">                <span class="comment">// 重新加载类</span></span><br><span class="line">                Class&lt;?&gt; cls = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    cls = hotClassLoader.loadClass(<span class="string">"net.ziruo.classloader.Apple"</span>);</span><br><span class="line">                    Object o = cls.newInstance();</span><br><span class="line">                    Method method = cls.getMethod(<span class="string">"say"</span>, <span class="keyword">null</span>);</span><br><span class="line">                    method.invoke(o, <span class="keyword">new</span> Object[]&#123;&#125;);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(cls.getClassLoader().toString());</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="number">0</span>, <span class="number">3000L</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现效果:</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/10/25/16e0263bcfacafce?imageView2/2/w/480/h/480/q/85/interlace/1" alt=""></p>
+<p>参考文章：</p>
+<blockquote>
+<p><a href="https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html</a><br><a href="https://www.ibm.com/developerworks/cn/java/j-lo-hotswapcls/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/java/j-lo-hotswapcls/index.html</a><br><a href="http://www.blogjava.net/vincent/archive/2008/08/30/225804.html" target="_blank" rel="noopener">http://www.blogjava.net/vincent/archive/2008/08/30/225804.html</a></p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.october.ink/2019/10/25/%E9%87%8D%E5%86%99%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E7%83%AD%E5%8A%A0%E8%BD%BD/" title="重写类加载器实现简单的热加载" target="_blank" rel="external">https://blog.october.ink/2019/10/25/%E9%87%8D%E5%86%99%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E7%83%AD%E5%8A%A0%E8%BD%BD/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="http://blog.october.ink" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="http://blog.october.ink" target="_blank"><span class="text-dark">十月</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>时光不负有心人，一生只爱你一人。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/" title="JVM之类加载过程"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/skykiss" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

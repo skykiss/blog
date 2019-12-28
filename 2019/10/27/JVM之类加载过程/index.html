@@ -17,23 +17,25 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>判断一棵树是否是AVL树 | October&#39;s blog</title>
-  <meta name="description" content="平衡二叉树的定义​    任何两个子树的高度差最大是1，这样的二叉树叫做AVL树。 解题思路从底部到顶部递归判断左右子树相差是否大于1，如果大于1则表示不满足AVL的性质，当所有的都满足后，判定这是一颗平衡二叉树。 实现代码1234567891011121314151617import java.util.*;public class Solution &amp;#123;    public boole">
+  <title>JVM之类加载过程 | October&#39;s blog</title>
+  <meta name="description" content="类加载的触发一个类从加载到内存开始，一直到被卸载结束，他的整个生命周期包括加载、连接（验证、准备、解析）、初始化、使用、卸载等几个阶段。这几个顺序如下图所示：  类的加载触发：Java虚拟机并没有强制规定类加载是基本，这个情况需要虚拟机自由实现。例如Tomcat在启动的时候，会启动引导类加载器、扩展类加载器、通用类加载器和应用类加载器。这个几个加载器首先会加载和初始化一些类（JVM所需类、Tomc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="判断一棵树是否是AVL树">
-<meta property="og:url" content="https://blog.october.ink/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/index.html">
+<meta property="og:title" content="JVM之类加载过程">
+<meta property="og:url" content="https://blog.october.ink/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="October&#39;s blog">
-<meta property="og:description" content="平衡二叉树的定义​    任何两个子树的高度差最大是1，这样的二叉树叫做AVL树。 解题思路从底部到顶部递归判断左右子树相差是否大于1，如果大于1则表示不满足AVL的性质，当所有的都满足后，判定这是一颗平衡二叉树。 实现代码1234567891011121314151617import java.util.*;public class Solution &amp;#123;    public boole">
+<meta property="og:description" content="类加载的触发一个类从加载到内存开始，一直到被卸载结束，他的整个生命周期包括加载、连接（验证、准备、解析）、初始化、使用、卸载等几个阶段。这几个顺序如下图所示：  类的加载触发：Java虚拟机并没有强制规定类加载是基本，这个情况需要虚拟机自由实现。例如Tomcat在启动的时候，会启动引导类加载器、扩展类加载器、通用类加载器和应用类加载器。这个几个加载器首先会加载和初始化一些类（JVM所需类、Tomc">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-12-01T11:25:24.000Z">
-<meta property="article:modified_time" content="2019-12-27T11:30:00.525Z">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/10/27/16e0dbce091bbc45?imageView2/2/w/480/h/480/q/85/interlace/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/10/27/16e0dbd82a07f58b?imageView2/2/w/480/h/480/q/85/interlace/1">
+<meta property="article:published_time" content="2019-10-27T11:03:34.000Z">
+<meta property="article:modified_time" content="2019-12-28T11:08:06.770Z">
 <meta property="article:author" content="october">
-<meta property="article:tag" content="数据结构">
-<meta property="article:tag" content="平衡二叉树">
-<meta property="article:tag" content="AVL树">
+<meta property="article:tag" content="JVM">
+<meta property="article:tag" content="类加载">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/10/27/16e0dbce091bbc45?imageView2/2/w/480/h/480/q/85/interlace/1">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://blog.october.ink/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/index.html">
+  <link rel="canonical" href="https://blog.october.ink/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/index.html">
   
     <link rel="alternate" href="/atom.xml" title="October&#39;s blog" type="application/atom+xml">
   
@@ -324,14 +326,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-判断一棵树是否是AVL树" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-JVM之类加载过程" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      判断一棵树是否是AVL树
+      JVM之类加载过程
     </h1>
   
 
@@ -339,42 +341,83 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/" class="article-date">
-	  <time datetime="2019-12-01T11:25:24.000Z" itemprop="datePublished">2019-12-01</time>
+	<a href="/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/" class="article-date">
+	  <time datetime="2019-10-27T11:03:34.000Z" itemprop="datePublished">2019-10-27</time>
 	</a>
 </span>
         
   <span class="article-category">
     <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
   </span>
 
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/AVL%E6%A0%91/" rel="tag">AVL树</a>, <a class="article-tag-link" href="/tags/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">平衡二叉树</a>, <a class="article-tag-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a>
+	<a class="article-tag-link" href="/tags/JVM/" rel="tag">JVM</a>, <a class="article-tag-link" href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/" rel="tag">类加载</a>
   </span>
 
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/#comments" class="article-comment-link">Comments</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/#comments" class="article-comment-link">Comments</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 199(words)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 2.6k(words)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 1(minutes)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 8(minutes)</span>
 	
 
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h5 id="平衡二叉树的定义"><a href="#平衡二叉树的定义" class="headerlink" title="平衡二叉树的定义"></a>平衡二叉树的定义</h5><p>​    任何两个子树的高度差最大是1，这样的二叉树叫做AVL树。</p>
-<h5 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h5><p>从底部到顶部递归判断左右子树相差是否大于1，如果大于1则表示不满足AVL的性质，当所有的都满足后，判定这是一颗平衡二叉树。</p>
-<h5 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">IsBalanced_Solution</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> depth(root) != -<span class="number">1</span>;   </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">depth</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> left = depth(root.left);</span><br><span class="line">        <span class="keyword">if</span> (left == -<span class="number">1</span>) <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 没必要进行判断了</span></span><br><span class="line">        <span class="keyword">int</span> right = depth(root.right);</span><br><span class="line">        <span class="keyword">if</span> (right == -<span class="number">1</span>) <span class="keyword">return</span> -<span class="number">1</span>;  <span class="comment">// 没必要进行判断了</span></span><br><span class="line">        <span class="keyword">if</span> (Math.abs(left-right) &gt; <span class="number">1</span>) <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 左子树和右子树相差大于1</span></span><br><span class="line">        <span class="keyword">return</span> Math.max(left, right) + <span class="number">1</span>;  <span class="comment">// 返回左右子树大的那个+1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h3 id="类加载的触发"><a href="#类加载的触发" class="headerlink" title="类加载的触发"></a>类加载的触发</h3><p>一个类从加载到内存开始，一直到被卸载结束，他的整个生命周期包括加载、连接（验证、准备、解析）、初始化、使用、卸载等几个阶段。这几个顺序如下图所示：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/10/27/16e0dbce091bbc45?imageView2/2/w/480/h/480/q/85/interlace/1" alt=""></p>
+<p>类的加载触发：Java虚拟机并没有强制规定类加载是基本，这个情况需要虚拟机自由实现。例如Tomcat在启动的时候，会启动引导类加载器、扩展类加载器、通用类加载器和应用类加载器。这个几个加载器首先会加载和初始化一些类（JVM所需类、Tomcat所需类、以及一些通用类），剩下的类是收到请求的时候才会进行类的加载操作。<br>虽然虚拟机没有明确的说明类的加载时机。但是对于初始化阶段，虚拟机给予了严格规定，<strong>有且只有</strong>一下情况才会立即对类进行初始化：</p>
+<ol>
+<li>遇到new、putstatic、getstatic以及invokestatic这4条字节码指令时，如果类还没初始化吗，则立即进行初始化，这4条指令分别代表实例化一个类、设置&amp;读取一个静态字段（没有被final修饰）、调用类的静态方法；</li>
+<li>使用java.lang.reflect包对类进行反射操作时候（在类没初始化的前提下）。</li>
+<li>当初始化一个类，但是其父类没有进行初始化的时候。</li>
+<li>放虚拟机启动的时候，需要将执行启动的主类（有main方法的哪个类）进行初始化。</li>
+<li>当使用动态语言时，如果一个java.lang.invoke.MethodHandle实例最终的解析结果是REF_getStatic、REF_putStatic、REF_invokeStatic句柄时，并且这个句柄对应的类没有初始化。</li>
+</ol>
+<h3 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h3><h4 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h4><p><u>加载</u>是<u>类加载</u>的一个阶段，是类加载的第一个阶段。加载阶段，虚拟机完成三件事情：</p>
+<ul>
+<li>根据类的全限定名获取定义此类的二进制字节流（全限定名是将.替换为/）。</li>
+<li>将这个字节流代表的静态存储结构转换为元空间的运行时数据结构（JDK8以前叫做方法区）。</li>
+<li>在元空间为这个类生成一个java.lang.Class对象，作为元空间这个类入口。</li>
+</ul>
+<p>Java虚拟机规范并没有规定从哪里获取、怎么获取二进制字节流，这个阶段也是用户参与度最高的阶段，用户可以使用不同的形式在自定义类加载器控制字节流的获取方式，比如成熟的二进制获取方式和类加载器有：</p>
+<ul>
+<li>从zip包中获取二进制文件，常见的有jar、war、ear包。</li>
+<li>从运行时动态生成，如动态代理技术，在ava.lang.reflect.Proxy中，使用 ProxyGenerator.generateProxyClass为各种就接口生成形如 “$Proxy”的代理类的二进制字节流；</li>
+<li>从网络中获取，比较常见的是Applet应用。</li>
+<li>从其他文件生产，比jsp等。<br>…….</li>
+</ul>
+<p>数组的加载和普通的类不同，因为数组本身并不是通过类记载其加载产生的，数组类是虚拟机自动生成的但是数组的类型是通过类加载器完成加载的，数组的创建遵循如下规则：</p>
+<ul>
+<li>如果数组的类型是引用类型，则引用类型需要使用递归来加载，并且数组需要被加载该数组类型的类加载器命名空间上进行标识。</li>
+<li>如果数组的类型不是引用类型，是基本数据类型，java虚拟机会将数组标记为与引导类加载器关联。</li>
+<li>数组的可见性与数据类型的可见性保持一直，如果数组类型是基本类型，则默认为public。</li>
+</ul>
+<h4 id="验证（连接）"><a href="#验证（连接）" class="headerlink" title="验证（连接）"></a>验证（连接）</h4><h5 id="文件格式验证"><a href="#文件格式验证" class="headerlink" title="文件格式验证"></a>文件格式验证</h5><p>这一阶段主要验证字节流是否符合class文件格式规范，并且能够被虚拟机处理，保证输入的字节流能够被正确解析并且存储在元空间。这个阶段的验证是基于二进制字节流的验证，它的发生时间是在开始加载后，但是还没有在方法区存储之前，所以这个阶段再加载开始后进行，但是和加载阶段是混合进行的，这一阶段的校验包括以下这些验证点：<br>    1、 是否已魔数CAFEBABE开头；<br>    2、 主次版本号是否在当前虚拟机处理范围之内；<br>    3、 常量池中的常量是否有不被支持的类型(使用tag标识校验)；<br>    4、 指向常量的索引是否有不存在或者支持的类型；<br>    5、 字符类型是否符合规范；<br>    6、 class文件是否被修改过；<br>    …… </p>
+<h5 id="元数据验证"><a href="#元数据验证" class="headerlink" title="元数据验证"></a>元数据验证</h5><p> 第二阶段主要是进行语法分析，以保证class文件符合Java语法规范，这个阶段的验证点包括：<br>    1、 这个类是否有父类(除java.lang.Object类之外都有父类)；<br>    2、 这个类的父类是否继承了不允许被继承的类(final修饰)；<br>    3、 如果这个类不是抽象类，是否实现了其父类或者接口中要求实现的所有方法；<br>    4、 类中的字段、方法是否跟父类中的字段、方法冲突；<br>    ……</p>
+<h5 id="字节码验证"><a href="#字节码验证" class="headerlink" title="字节码验证"></a>字节码验证</h5><p>这个阶段是语义分析，是验证过程中最复杂的一个阶段，主要目的是通过数据流和控制流，确定语义是合法并且符合逻辑的，这个阶段主要是针对方法体进行分析，以保证方法在运行过程中不会出现危害虚拟机的操作，验证点包括：<br>    1、 变量要在使用之前进行初始化；<br>    2、 方法调用与对象引用类型要匹配；<br>    3、 数据和方法的访问要符合权限设置规则；<br>    4、 对本地变量的访问都落在运行时本地方法栈内；<br>    5、 运行时堆栈没有溢出；<br>    ……</p>
+<h5 id="符号引用验证"><a href="#符号引用验证" class="headerlink" title="符号引用验证"></a>符号引用验证</h5><p>最后阶段的校验发生在虚拟机将符号引用转化为直接引用的时候，这个过程将会在解析阶段进行，符号引用验证可以看作是对类自身以外的信息进行匹配校验，确保解析动作可以正常执行，这一阶段通常需要校验以下内容：<br>    1、 通过全限定名能否找到对应的类；<br>    2、 在指定类中是否存在符合方法的字段描述符以及简单名称所描述的方法和字段；<br>    3、 符号引用中的类、方法、字段的访问性(private、protected、public)是否可以被当前类访问到；<br>    ……</p>
+<p><strong>对于虚拟机来说，验证阶段是一个非常重要但不是必须进行的阶段，因为对虚拟机运行期没有影响，如果运行的所有代码可以保证能正常执行，不会危害虚拟机的运行，那么可以考虑关闭虚拟机的大部分验证过程，以缩短类加载时间。</strong></p>
+<h4 id="准备（连接）"><a href="#准备（连接）" class="headerlink" title="准备（连接）"></a>准备（连接）</h4><p>准备阶段是为类变量分配内存并且设置初始化值的阶段，这些变量所使用的内存都在元空间分配，这个阶段初始化的数据只有静态字段，并且是赋值初始化值（final字段除外），不是代码中定义的值。<br>   public static int value = 123;<br>在准备阶段，value在方法区分配内存，并且设置初始值0，如果value被final修饰，形如：<br>    public static final int value = 123;<br>则该变量在准备阶段将会被赋值123，并且不会引起类的初始化过程，示例及说明见第二部分(类加载的时机)的示例。</p>
+<h4 id="解析（连接）"><a href="#解析（连接）" class="headerlink" title="解析（连接）"></a>解析（连接）</h4><p>解析阶段是虚拟机将符号引用转化为直接引用的过程，符号引用在之前已经介绍过了，在class文件中以形如”CONSTANT_Class_info”、”CONSTANT_Fieldref_info”、”CONSTANT_Methodref_info”格式存在。</p>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>初始化阶段是类加载过程的最后一步，这个阶段才开始真正的执行用户定义的Java程序。在准备阶段，变量已经赋过一次系统要求的初始值，而在初始化阶段，则需要为类变量(非final修饰的类变量)和其他变量赋值，其实就是执行类的<clinit>()方法。<br><clinit>()不是一个合法变量，这个方法也不是由用户显示定义的，是由编译器生成的，编译器在编译阶段会自动手机类中的所有类变量的赋值动作和静态语句块(static{})中的语句合并而成的，编译器的顺序是由语句的顺序决定的，静态语句块只能访问到定义在静态语句块之前的变量，定义在静态语句块之后的变量，可以赋值，但是不能访问。（静态变量的初始化和静态代码块的执行顺序是由编写顺序决定的，根据javap我们可以看到）</p>
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> a = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(a);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>javap后结果：<br><img src="https://user-gold-cdn.xitu.io/2019/10/27/16e0dbd82a07f58b?imageView2/2/w/480/h/480/q/85/interlace/1" alt=""></p>
+<p><clinit>()方法与类的构造方法不同，它不需要用户显示的调用，虚拟机会保证父类的<clinit>()方法先于子类的<clinit>()执行，java.lang.Object的<clinit>()方法是最先执行的。<br>接口总不能使用用静态语句块，所以接口的<clinit>()只包含类变量，所以接口的<clinit>()方法执行时，不要求限制性父接口的<clinit>()方法。<br><clinit>()方法对于类和接口来说不是必须的，如果类或接口中没有定义类变量，也没有静态语句块，那么编译器将不为这个类或者接口生成<clinit>()方法，如果类或者接口中生成了<clinit>()方法，那么这个方法在执行过程中，虚拟机会保证在多线程环境下的线程安全问题。</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/u010942465/article/details/81709246" target="_blank" rel="noopener">https://blog.csdn.net/u010942465/article/details/81709246</a><br><a href="http://www.zhiliaotang.net/jishujiaoliu/Java/282.html" target="_blank" rel="noopener">http://www.zhiliaotang.net/jishujiaoliu/Java/282.html</a><br>深入理解Java虚拟机</p>
+</blockquote>
 
       
     </div>
@@ -384,7 +427,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://blog.october.ink/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/" title="判断一棵树是否是AVL树" target="_blank" rel="external">https://blog.october.ink/2019/12/01/%E5%88%A4%E6%96%AD%E4%B8%80%E6%A3%B5%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AFAVL%E6%A0%91/</a>
+      <a href="https://blog.october.ink/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/" title="JVM之类加载过程" target="_blank" rel="external">https://blog.october.ink/2019/10/27/JVM%E4%B9%8B%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -431,12 +474,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2019/12/23/JVM%E4%B9%8B%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E5%92%8C%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8/" title="JVM之符号引用和直接引用"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+      <a href="/2019/10/28/JVM%E4%B9%8B%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86/" title="JVM之内存区域划分"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2019/10/29/JVM%E4%B9%8B%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E8%AF%A6%E8%A7%A3/" title="JVM之虚拟机栈详解"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2019/10/25/%E9%87%8D%E5%86%99%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95%E7%9A%84%E7%83%AD%E5%8A%A0%E8%BD%BD/" title="重写类加载器实现简单的热加载"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
